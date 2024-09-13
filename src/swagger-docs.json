@@ -1,0 +1,398 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Message service api",
+    "version": "1.0.0",
+    "description": "A simple message service"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Message server"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Returns a status of server",
+        "responses": {
+          "200": {
+            "description": "status of server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/api/v1/messages/new": {
+      "get": {
+        "summary": "Returns a list of unread messages",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "Filter messages by recivers username",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of unread messages",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "content": {
+                        "type": "string"
+                      },
+                      "sender": {
+                        "type": "string"
+                      },
+                      "reciver": {
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "deleted": {
+                        "type": "boolean"
+                      },
+                      "read": {
+                        "type": "boolean"
+                      }
+                    },
+                    "example": {
+                      "id": "8a90169c-5232-41e3-a9b2-54a68e1b97e0",
+                      "content": "Hello, World!",
+                      "sender": "Alice",
+                      "reciver": "Bob",
+                      "createdAt": "2024-09-12T12:00:00Z",
+                      "updatedAt": "2024-09-12T12:00:00Z",
+                      "deleted": false,
+                      "read": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/messages": {
+      "get": {
+        "summary": "Returns a list of messages with pagination",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "Filter messages by username",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startIndex",
+            "in": "query",
+            "description": "The start index for pagination",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "stopIndex",
+            "in": "query",
+            "description": "The stop index for pagination",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of messages",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "content": {
+                        "type": "string"
+                      },
+                      "sender": {
+                        "type": "string"
+                      },
+                      "reciver": {
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "deleted": {
+                        "type": "boolean"
+                      },
+                      "read": {
+                        "type": "boolean"
+                      }
+                    },
+                    "example": {
+                      "id": "8a90169c-5232-41e3-a9b2-54a68e1b97e0",
+                      "content": "Hello, World!",
+                      "sender": "Alice",
+                      "reciver": "Bob",
+                      "createdAt": "2024-09-12T12:00:00Z",
+                      "updatedAt": "2024-09-12T12:00:00Z",
+                      "deleted": false,
+                      "read": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a new message",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string",
+                    "example": "Hello, World!"
+                  },
+                  "sender": {
+                    "type": "string",
+                    "example": "Alice"
+                  },
+                  "reciver": {
+                    "type": "string",
+                    "example": "Bob"
+                  }
+                },
+                "required": ["content", "sender", "reciver"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The created message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "content": {
+                      "type": "string"
+                    },
+                    "sender": {
+                      "type": "string"
+                    },
+                    "reciver": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "deleted": {
+                      "type": "boolean"
+                    },
+                    "read": {
+                      "type": "boolean"
+                    }
+                  },
+                  "example": {
+                    "id": "8a90169c-5232-41e3-a9b2-54a68e1b97e0",
+                    "content": "Hello, World!",
+                    "sender": "Alice",
+                    "reciver": "Bob",
+                    "createdAt": "2024-09-12T12:00:00Z",
+                    "updatedAt": "2024-09-12T12:00:00Z",
+                    "deleted": false,
+                    "read": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes multiple messages by IDs",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "messageIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": [
+                      "e3b0c442-98fc-1c14-9a8e-44d886f7d7a2",
+                      "fa5c34f1-0bce-4c4b-a3e3-68b52a2d5807",
+                      "0a7f2a2e-5e4b-4d45-a65e-75fc6b09d3d2"
+                    ]
+                  }
+                },
+                "required": ["messageIds"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result of the deletion operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "success": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "failed": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "reason": {
+                            "type": "string"
+                          }
+                        },
+                        "example": {
+                          "id": "1",
+                          "reason": "Message not found"
+                        }
+                      }
+                    }
+                  },
+                  "example": {
+                    "message": "Deletion operation completed",
+                    "success": [
+                      "e3b0c442-98fc-1c14-9a8e-44d886f7d7a2",
+                      "fa5c34f1-0bce-4c4b-a3e3-68b52a2d5807"
+                    ],
+                    "failed": [
+                      {
+                        "id": "0a7f2a2e-5e4b-4d45-a65e-75fc6b09d3d2",
+                        "reason": "Message not found"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/messages/{id}": {
+      "delete": {
+        "summary": "Deletes a message by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Message successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "success": {
+                      "type": "string"
+                    },
+                    "failed": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

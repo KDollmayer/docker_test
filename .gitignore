@@ -1,4 +1,4 @@
 node_modules
 dist
 .env
-testshit.json
+test.sh

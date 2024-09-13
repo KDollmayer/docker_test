@@ -8,10 +8,11 @@
     "build": "rimraf dist && swc ./src -d dist",
     "start": "node dist/src/index.js",
     "dev": "nodemon --watch src --ext ts --exec \"node -r @swc/register ./src/index.ts\"",
-    "docker:db:migrate": "npx prisma migrate dev",
-    "docker:seed:dev": "ts-node ./scripts/seed/database.ts",
-    "start:migrate:prod": "npx prisma migrate deploy && npx prisma generate && npm start",
-    "rebuild:be": "docker compose -f docker-compose.dev.yml build api && docker compose -f docker-compose.dev.yml rm --force --stop api && docker compose -f docker-compose.dev.yml up -d api"
+    "local:db:migrate": "npx prisma migrate dev",
+    "local:db:seed": "npx prisma migrate dev",
+    "docker:db:migrate": "docker exec -it server-api-1 npx prisma migrate dev",
+    "docker:db:seed": "docker exec -it server-api-1 ts-node ./scripts/seed/database.ts",
+    "rebuild:be": "docker compose build api && docker compose rm --force --stop api && docker compose up -d api"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +23,8 @@
     "express": "^4.20.0",
     "joi": "^17.13.3",
     "morgan": "^1.10.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "typescript": "^5.6.2"
   },
   "devDependencies": {
@@ -33,13 +36,13 @@
     "@types/express": "^4.17.21",
     "@types/morgan": "^1.9.9",
     "@types/node": "^22.5.4",
+    "@types/swagger-ui-express": "^4.1.6",
     "@typescript-eslint/eslint-plugin": "^8.5.0",
     "@typescript-eslint/parser": "^8.5.0",
     "eslint": "^9.10.0",
     "nodemon": "^3.1.4",
     "prisma": "^5.19.1",
     "rimraf": "^6.0.1",
-    "ts-node": "^10.9.2",
-    "watchy": "^0.10.2"
+    "ts-node": "^10.9.2"
   }
 }

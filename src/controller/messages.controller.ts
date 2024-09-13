@@ -17,8 +17,8 @@ export async function getNewMessages(
     username: string | undefined;
   };
   try {
-    const messages = await getNewMessagesByReciverService(username);
-    res.json(messages);
+    const response = await getNewMessagesByReciverService(username);
+    res.json(response);
   } catch (error) {
     next(error);
   }
@@ -35,12 +35,12 @@ export async function getAllMessagesByReciver(
       stopIndex: string;
     };
 
-    const messages = await getMessagesByReciverPagination({
+    const response = await getMessagesByReciverPagination({
       startIndex: Number(startIndex),
       stopIndex: Number(stopIndex),
       userName: username,
     });
-    res.json(messages);
+    res.json(response);
   } catch (error) {
     next(error);
   }
@@ -52,8 +52,8 @@ export async function submitMessage(
 ) {
   const message: Prisma.MessageCreateInput = req.body;
   try {
-    const messages = await createMessageService(message);
-    res.json(messages);
+    const response = await createMessageService(message);
+    res.json(response);
   } catch (error) {
     next(error);
   }
@@ -65,8 +65,8 @@ export async function deleteSingleMessage(
 ) {
   const { messageId } = req.params;
   try {
-    const messages = await deleteSingleMessageService(messageId);
-    res.json(messages);
+    const response = await deleteSingleMessageService(messageId);
+    res.json(response);
   } catch (error) {
     next(error);
   }
@@ -78,8 +78,8 @@ export async function deleteManyMessages(
 ) {
   const { messageIds } = req.body;
   try {
-    const messages = await deleteManyMessagesService(messageIds);
-    res.json(messages);
+    const response = await deleteManyMessagesService(messageIds);
+    res.json(response);
   } catch (error) {
     next(error);
   }

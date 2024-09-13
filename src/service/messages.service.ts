@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client';
 import {
   createMessage,
+  deleteManyMessage,
   deleteSingleMessage,
   findManyMessagesByReciverPagination,
   findNewMessagesByReciver,
@@ -42,9 +43,21 @@ export async function getMessagesByReciverPagination({
 export async function createMessageService(message: Prisma.MessageCreateInput) {
   return await createMessage(message);
 }
-export async function deleteSingleMessageService(messageIds: string) {
-  return await deleteSingleMessage(messageIds);
+export async function deleteSingleMessageService(messageId: string) {
+  const data = await deleteSingleMessage(messageId);
+  return {
+    message: 'DELETE',
+    success: data.success,
+    failed: data.failed,
+    reason: data.failed ? 'Not Found' : '',
+  };
 }
-export async function deleteManyMessagesService(messageIds: string) {
-  return await deleteSingleMessage(messageIds);
+export async function deleteManyMessagesService(messageIds: string[]) {
+  const uniqueMessageIds: string[] = Array.from(new Set(messageIds));
+  const data = await deleteManyMessage(uniqueMessageIds);
+  return {
+    message: 'DELETE',
+    success: data.updatedIds,
+    failed: data.failedIds,
+  };
 }

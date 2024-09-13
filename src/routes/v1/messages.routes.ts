@@ -1,5 +1,7 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
 import {
+  deleteManyMessages,
+  deleteSingleMessage,
   getAllMessagesByReciver,
   getNewMessages,
   submitMessage,
@@ -23,8 +25,13 @@ router.get(
 router.post('/', validate(postMessageSchema, 'body'), submitMessage);
 router.delete(
   '/:messageId',
-  validate(deleteSingleMessageParamSchema, 'params')
+  validate(deleteSingleMessageParamSchema, 'params'),
+  deleteSingleMessage
 );
-router.delete('/', validate(deleteManyMessageBodySchema, 'body'));
+router.delete(
+  '/',
+  validate(deleteManyMessageBodySchema, 'body'),
+  deleteManyMessages
+);
 
 export default router;
